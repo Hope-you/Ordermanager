@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.OpenApi.Models;
 
 namespace Ordermanager
 {
@@ -25,6 +26,17 @@ namespace Ordermanager
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("V1", new OpenApiInfo
+                {
+                    Title = "Swagger½Ó¿ÚÎÄµµ",
+                    Version = "v1",
+                    Description = $"Core.WebApi HTTP API V1",
+                });
+                options.OrderActionsBy(o => o.RelativePath);
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,6 +46,8 @@ namespace Ordermanager
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
 
             app.UseRouting();
 
