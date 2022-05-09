@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Ordermanager.Dal;
+using Ordermanager.Model;
 
 namespace Ordermanager.Controllers
 {
@@ -18,11 +20,13 @@ namespace Ordermanager.Controllers
         {
             _logger = logger;
         }
-
         [HttpGet]
         public string helloWorld()
         {
+            _logger.Log(LogLevel.Debug, "helloWorld()", _logger);
             return "Hello World!";
         }
+
+
     }
 }

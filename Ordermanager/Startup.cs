@@ -8,8 +8,14 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Ordermanager.Dal;
+using Ordermanager.Model;
+using Ordermanager.SqlContext;
 
 namespace Ordermanager
 {
@@ -37,6 +43,32 @@ namespace Ordermanager
                 options.OrderActionsBy(o => o.RelativePath);
             });
 
+
+            services.AddScoped(typeof(IDapperExtHelper<>), typeof(DapperExtHelper<>));
+            ////注册jwt服务
+            var token = Configuration.GetSection("tokenConfig").Get<TokenManagement>();
+
+            //启用JWT
+            services.AddAuthentication(Options =>
+                {
+                    Options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    Options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = token.Issuer,
+                        ValidAudience = token.Audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(token.Secret)),
+                        ClockSkew = TimeSpan.FromMinutes(1)
+                    };
+                });
+
+
+
+            services.AddDbcontext(Configuration.GetConnectionString("Default"));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,9 +80,16 @@ namespace Ordermanager
             }
 
             app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint($"/swagger/V1/swagger.json", "Webapi-V1");
+                options.RoutePrefix = "";
+            });
 
             app.UseRouting();
 
+            //认证
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
