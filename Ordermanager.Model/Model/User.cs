@@ -31,5 +31,10 @@ namespace Ordermanager.Model
         /// 上次登陆时间
         /// </summary>
         public DateTime userLoginTime { get; set; }
+
+        /// <summary>
+        /// 是否删除
+        /// </summary>
+        public bool IsDelete { get; set; }
     }
 }

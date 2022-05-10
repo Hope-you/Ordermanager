@@ -4,9 +4,10 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using Dapper.Contrib.Extensions;
 using MySql.Data.MySqlClient;
 
-namespace Ordermanager.SqlContext
+namespace DbHelper
 {
     public class DapperHelper : IDapperHelper
     {
@@ -77,5 +78,34 @@ namespace Ordermanager.SqlContext
             return DbContext.DbConnection.Execute(sql, param, transaction, commandTimeout, commandType);
         }
 
+        public T Get<T>(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<T> GetAll<T>()
+        {
+            throw new NotImplementedException();
+        }
+
+        public long Insert<T>(T t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete<T>(T t)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool DeletAll(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Update<T>(T t)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

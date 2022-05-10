@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DbHelper;
 using Microsoft.AspNetCore.Authorization;
+using Ordermanager.Bll;
 using Ordermanager.Dal;
 using Ordermanager.Model;
-using Ordermanager.SqlContext;
 
 namespace Ordermanager.Controllers
 {
@@ -17,20 +18,22 @@ namespace Ordermanager.Controllers
     {
         private readonly IDapperExtHelper<User> _userDapper;
 
-        private readonly UserDal _users;
+        private readonly UserBll _userBll;
+        //private readonly UserDal _users;
         //public LoginController(UserDal users)
         //{
         //    _users = users;
         //}
-        public LoginController(IDapperExtHelper<User> userDapper,IDapperHelper dapperHelper)
+        public LoginController(IDapperExtHelper<User> userDapper,UserBll userBll)
         {
             _userDapper = userDapper;
+            _userBll = userBll;
         }
 
         [HttpGet("{userName}/{userPwd}")]
         public User Get(string userName, string userPwd)
         {
-            return _users.GetUserByLogin(userName, userPwd);
+            return _userBll.GetUserByLogin(userName, userPwd);
         }
 
         /// <summary>

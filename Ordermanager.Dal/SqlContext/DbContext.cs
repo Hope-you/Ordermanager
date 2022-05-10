@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MySql.Data.MySqlClient;
 
-namespace Ordermanager.SqlContext
+namespace DbHelper
 {
     public static class DbContext
     {

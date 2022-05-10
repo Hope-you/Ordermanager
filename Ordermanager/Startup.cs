@@ -10,12 +10,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DbHelper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Ordermanager.Bll;
 using Ordermanager.Dal;
 using Ordermanager.Model;
-using Ordermanager.SqlContext;
 
 namespace Ordermanager
 {
@@ -43,8 +44,15 @@ namespace Ordermanager
                 options.OrderActionsBy(o => o.RelativePath);
             });
 
+            //services.AddBusiness();
 
+            //注册DapperExtHelper
             services.AddScoped(typeof(IDapperExtHelper<>), typeof(DapperExtHelper<>));
+            services.AddScoped<DapperExtHelper<User>>();
+            //services.AddScoped(typeof(IDal<>), typeof(BaseDal<>));
+            services.AddScoped<UserDal>();
+            services.AddScoped<UserBll>();
+
             ////注册jwt服务
             var token = Configuration.GetSection("tokenConfig").Get<TokenManagement>();
 
@@ -66,7 +74,7 @@ namespace Ordermanager
                 });
 
 
-
+            //配置数据库连接字符串
             services.AddDbcontext(Configuration.GetConnectionString("Default"));
 
         }

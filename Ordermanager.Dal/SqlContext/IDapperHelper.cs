@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Ordermanager.SqlContext
+namespace DbHelper
 {
     public interface IDapperHelper
     {
@@ -36,5 +36,49 @@ namespace Ordermanager.SqlContext
         /// <returns></returns>
         public int Execute(string sql, object param = null, IDbTransaction transaction = null,
             int? commandTimeout = null, CommandType? commandType = null);
+
+
+
+        /// <summary>
+        /// 根据主键获取一个实体
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public T Get<T>(string id);
+
+        /// <summary>
+        /// 获取当前实体的所有值
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        IEnumerable<T> GetAll<T>();
+
+        /// <summary>
+        /// 插入一个实体，
+        /// </summary>
+        /// <param name="t">需要插入的实体</param>
+        /// <returns></returns>
+        long Insert<T>(T t);
+
+        /// <summary>
+        /// 根据实体删除
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        bool Delete<T>(T t);
+
+        /// <summary>
+        /// 删除所有的数据
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        bool DeletAll(string id);
+
+        /// <summary>
+        /// 更新一个实体  tips dapper和ef也都是需要先查询出来然后再传递实体进行更新
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        bool Update<T>(T t);
     }
 }
