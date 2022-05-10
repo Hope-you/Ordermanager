@@ -38,7 +38,7 @@ namespace Ordermanager
                 {
                     Title = "Swagger½Ó¿ÚÎÄµµ",
                     Version = "v1",
-                    Description = $"Core.WebApi HTTP API V1",
+                    Description = "Core.WebApi HTTP API V1",
                 });
                 options.OrderActionsBy(o => o.RelativePath);
             });

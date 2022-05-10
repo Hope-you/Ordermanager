@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Ordermanager.Dal;
+using Ordermanager.Bll;
 using Ordermanager.Model;
 
 namespace Ordermanager.Controllers

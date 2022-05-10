@@ -22,10 +22,11 @@ namespace Ordermanager.Controllers
         //{
         //    _users = users;
         //}
-        public LoginController(IDapperExtHelper<User> userDapper)
+        public LoginController(IDapperExtHelper<User> userDapper,IDapperHelper dapperHelper)
         {
             _userDapper = userDapper;
         }
+
         [HttpGet("{userName}/{userPwd}")]
         public User Get(string userName, string userPwd)
         {

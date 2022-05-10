@@ -7,7 +7,7 @@ using Ordermanager.Model;
 
 namespace Ordermanager.Dal
 {
-    public class UserDal
+    public class UserDal :BaseDal<User>
     {
         private readonly IDapperHelper _dapperHelper;
         

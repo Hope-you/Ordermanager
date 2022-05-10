@@ -64,6 +64,11 @@ namespace Ordermanager.SqlContext
             return DbContext.DbConnection.Get<T>(id);
         }
 
+
+        public  T gettt()
+        {
+            return default;
+        }
         /// <summary>
         /// 获取当前实体的所有值
         /// </summary>
