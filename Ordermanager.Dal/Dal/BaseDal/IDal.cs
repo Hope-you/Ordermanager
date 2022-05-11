@@ -6,10 +6,15 @@ using Ordermanager.Model;
 
 namespace Ordermanager.Dal
 {
+
+    /// <summary>
+    /// 最基本的接口，不同的类可以在这里进行继承
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public interface IDal<T> where T : BaseModel, new()
     {
-        
-        public long add( T t);
+
+        public long add(T t);
         public bool delete(T t);
         public bool update(T t);
         public T select(string id);

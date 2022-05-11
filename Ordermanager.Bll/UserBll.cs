@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DbHelper;
 using Ordermanager.Dal;
 using Ordermanager.Model;
@@ -8,26 +9,27 @@ namespace Ordermanager.Bll
     //[Service]
     public class UserBll
     {
-        private UserDal _userDal;
+        private IUserDal _userDal;
 
-        private readonly IDapperExtHelper<User> _dapperExtHelper;
-
-        public UserBll(IDapperExtHelper<User> dapperExtHelper, UserDal userDal)
+        /// <summary>
+        /// 从容器里获取数据dal层
+        /// </summary>
+        /// <param name="userDal"></param>
+        public UserBll(IUserDal userDal)
         {
-            _dapperExtHelper = dapperExtHelper;
             _userDal = userDal;
         }
 
-        public User GetUserByLogin(string userName, string userPwd)
+        public Model.User GetUserByLogin(string userName, string userPwd)
         {
             var user = _userDal.GetUserByLogin(userName, userPwd);
             user.userLoginTime = DateTime.Now;
-            if (user.IsDelete)
-                return default;
             return user;
         }
 
-
-
+        public IEnumerable<Model.User> GetAll()
+        {
+            return _userDal.selectAll();
+        }
     }
 }

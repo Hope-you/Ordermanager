@@ -9,7 +9,7 @@ namespace Ordermanager.Model
     /// <summary>
     /// dapper的扩展方法getAll会自动加上s 这里指定表名
     /// </summary>
-    [Table("user")]
+    [Table("User")]
     public class User : BaseModel
     {
         /// <summary>

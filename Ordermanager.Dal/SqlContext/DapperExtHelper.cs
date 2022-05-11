@@ -25,6 +25,7 @@ namespace DbHelper
         /// <returns></returns>
         IEnumerable<T> GetAll();
 
+
         /// <summary>
         /// 插入一个实体，
         /// </summary>
@@ -87,7 +88,7 @@ namespace DbHelper
 
     }
 
-    public class DapperExtHelper<T> : IDapperExtHelper<T> where T:BaseModel,new()
+    public class DapperExtHelper<T> : IDapperExtHelper<T> where T : BaseModel, new()
     {
         /// <summary>
         /// 根据主键获取一个实体
@@ -98,7 +99,7 @@ namespace DbHelper
         {
             return DbContext.DbConnection.Get<T>(id);
         }
-        
+
         /// <summary>
         /// 获取当前实体的所有值
         /// </summary>
@@ -108,6 +109,7 @@ namespace DbHelper
         {
             return DbContext.DbConnection.GetAll<T>();
         }
+
 
         /// <summary>
         /// 插入一个实体，

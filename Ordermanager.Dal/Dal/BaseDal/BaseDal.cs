@@ -12,32 +12,41 @@ namespace Ordermanager.Dal
     //{
 
     //}
+    /// <summary>
+    /// basedal是继承IDal的类，实现了最基本的几个方法crud，其他的实体直接继承BaseDal就可以了
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class BaseDal<T> : IDal<T> where T : BaseModel, new()
     {
-
+        public IDapperExtHelper<T> dapperExtHelper;
+        public BaseDal(IDapperExtHelper<T> _dapperExtHelper)
+        {
+            dapperExtHelper = _dapperExtHelper;
+        }
         public long add(T t)
         {
-            return DbContext.DbConnection.Insert(t);
+            return dapperExtHelper.Insert(t);
         }
 
         public bool delete(T t)
         {
-            return DbContext.DbConnection.Delete(t);
+            return dapperExtHelper.Delete(t);
         }
 
         public bool update(T t)
         {
-            return DbContext.DbConnection.Update(t);
+            return dapperExtHelper.Update(t);
         }
 
         public T @select(string id)
         {
-            return DbContext.DbConnection.Get<T>(id);
+            
+            return dapperExtHelper.Get(id);
         }
 
         public IEnumerable<T> selectAll()
         {
-            return DbContext.DbConnection.GetAll<T>();
+            return dapperExtHelper.GetAll();
         }
 
 

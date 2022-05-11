@@ -14,9 +14,16 @@ using DbHelper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Ordermanager.Api.DependencyInjection;
 using Ordermanager.Bll;
 using Ordermanager.Dal;
+using Ordermanager.Dal.Dal.CommodityDal;
+using Ordermanager.Dal.HotelDal;
+using Ordermanager.Dal.OrderDal;
 using Ordermanager.Model;
+using Hotel = Ordermanager.Model.Hotel;
+using OrderBll = Ordermanager.Bll.OrderBll;
+using UserBll = Ordermanager.Bll.UserBll;
 
 namespace Ordermanager
 {
@@ -44,23 +51,17 @@ namespace Ordermanager
                 options.OrderActionsBy(o => o.RelativePath);
             });
 
-            //services.AddBusiness();
-
-            //注册DapperExtHelper
-            services.AddScoped(typeof(IDapperExtHelper<>), typeof(DapperExtHelper<>));
-            services.AddScoped<DapperExtHelper<User>>();
-            //services.AddScoped(typeof(IDal<>), typeof(BaseDal<>));
-            services.AddScoped<UserDal>();
-            services.AddScoped<UserBll>();
+            //把几个dal和bll一起注入
+            services.BatchInjection();
 
             ////注册jwt服务
             var token = Configuration.GetSection("tokenConfig").Get<TokenManagement>();
 
             //启用JWT
-            services.AddAuthentication(Options =>
+            services.AddAuthentication(options =>
                 {
-                    Options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    Options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
                 .AddJwtBearer(options =>
                 {

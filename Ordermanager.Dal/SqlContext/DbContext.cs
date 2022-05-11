@@ -48,7 +48,9 @@ namespace DbHelper
         public static void AddDbcontext(this IServiceCollection service,string connectString)
         {
             connectionString = connectString;
-            service.AddScoped<IDapperHelper, DapperHelper>();
+
+            //注册DapperExtHelper
+            service.AddScoped(typeof(IDapperExtHelper<>), typeof(DapperExtHelper<>));
         }
     }
 }

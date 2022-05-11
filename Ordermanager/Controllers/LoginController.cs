@@ -16,22 +16,19 @@ namespace Ordermanager.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly IDapperExtHelper<User> _userDapper;
-
-        private readonly UserBll _userBll;
+        private readonly Bll.UserBll _userBll;
         //private readonly UserDal _users;
         //public LoginController(UserDal users)
         //{
         //    _users = users;
         //}
-        public LoginController(IDapperExtHelper<User> userDapper,UserBll userBll)
+        public LoginController(Bll.UserBll userBll)
         {
-            _userDapper = userDapper;
             _userBll = userBll;
         }
 
         [HttpGet("{userName}/{userPwd}")]
-        public User Get(string userName, string userPwd)
+        public Model.User Get(string userName, string userPwd)
         {
             return _userBll.GetUserByLogin(userName, userPwd);
         }
@@ -41,9 +38,9 @@ namespace Ordermanager.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<User> GetAll()
+        public IEnumerable<Model.User> GetAll()
         {
-            return _userDapper.GetAll();
+            return _userBll.GetAll();
         }
     }
 }
