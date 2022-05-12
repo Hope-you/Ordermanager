@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using DbHelper;
+using Ordermanager.Dal.RedisContext;
 using Ordermanager.Model;
 
 namespace Ordermanager.Dal.Dal.CommodityDal
@@ -14,10 +15,12 @@ namespace Ordermanager.Dal.Dal.CommodityDal
     public class CommodityDal : BaseDal<Commodity>, ICommodityDal
     {
         private readonly IDapperExtHelper<Commodity> _dapperExtHelper;
+        private readonly IRedisHelper<Commodity> _redisHelper;
 
-        public CommodityDal(IDapperExtHelper<Commodity> dapperExtHelper) : base(dapperExtHelper)
+        public CommodityDal(IDapperExtHelper<Commodity> dapperExtHelper, IRedisHelper<Commodity> redisHelper) : base(dapperExtHelper, redisHelper)
         {
             _dapperExtHelper = dapperExtHelper;
+            _redisHelper = redisHelper;
         }
 
         public IEnumerable<Commodity> GetCommodityByOrderid(string orderId)

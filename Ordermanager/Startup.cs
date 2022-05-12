@@ -20,7 +20,9 @@ using Ordermanager.Dal;
 using Ordermanager.Dal.Dal.CommodityDal;
 using Ordermanager.Dal.HotelDal;
 using Ordermanager.Dal.OrderDal;
+using Ordermanager.Dal.RedisContext;
 using Ordermanager.Model;
+using Ordermanager.Model.Redis;
 using Hotel = Ordermanager.Model.Hotel;
 using OrderBll = Ordermanager.Bll.OrderBll;
 using UserBll = Ordermanager.Bll.UserBll;
@@ -53,6 +55,9 @@ namespace Ordermanager
 
             //把几个dal和bll一起注入
             services.BatchInjection();
+
+            //注入redis
+            services.AddRedisContext(Configuration.GetSection("Redis:Default").Get<RedisConection>());
 
             ////注册jwt服务
             var token = Configuration.GetSection("tokenConfig").Get<TokenManagement>();

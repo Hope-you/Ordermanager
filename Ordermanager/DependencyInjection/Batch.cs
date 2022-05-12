@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Ordermanager.Bll;
+using Ordermanager.Dal;
 using Ordermanager.Dal.Dal.CommodityDal;
 using Ordermanager.Dal.HotelDal;
 using Ordermanager.Dal.OrderDal;
@@ -15,6 +16,8 @@ namespace Ordermanager.Api.DependencyInjection
     {
         public static void BatchInjection(this IServiceCollection services)
         {
+            services.AddScoped<IUserDal, UserDal>();
+            services.AddScoped<UserBll>();
             services.AddScoped<IHotelDal, HotelDall>();
             services.AddScoped<HotelBll>();
             services.AddScoped<IOrderDal, OrderDal>();

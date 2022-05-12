@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper.Contrib.Extensions;
 using DbHelper;
+using Ordermanager.Dal.RedisContext;
 using Ordermanager.Model;
 
 namespace Ordermanager.Dal
@@ -19,9 +20,12 @@ namespace Ordermanager.Dal
     public class BaseDal<T> : IDal<T> where T : BaseModel, new()
     {
         public IDapperExtHelper<T> dapperExtHelper;
-        public BaseDal(IDapperExtHelper<T> _dapperExtHelper)
+        public IRedisHelper<T> redisHelper;
+
+        public BaseDal(IDapperExtHelper<T> _dapperExtHelper,IRedisHelper<T> _redisHelper)
         {
             dapperExtHelper = _dapperExtHelper;
+            redisHelper = _redisHelper;
         }
         public long add(T t)
         {

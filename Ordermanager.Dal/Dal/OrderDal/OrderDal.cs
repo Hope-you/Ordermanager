@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using DbHelper;
+using Ordermanager.Dal.RedisContext;
 using Ordermanager.Model;
 
 namespace Ordermanager.Dal.OrderDal
@@ -20,10 +21,12 @@ namespace Ordermanager.Dal.OrderDal
     public class OrderDal : BaseDal<Order>, IOrderDal
     {
         private readonly IDapperExtHelper<Order> _dapperExtHelper;
+        private readonly IRedisHelper<Order> _redisHelper;
 
-        public OrderDal(IDapperExtHelper<Order> dapperExtHelper) : base(dapperExtHelper)
+        public OrderDal(IDapperExtHelper<Order> dapperExtHelper,IRedisHelper<Order> redisHelper) : base(dapperExtHelper, redisHelper)
         {
             _dapperExtHelper = dapperExtHelper;
+            _redisHelper = redisHelper;
         }
 
         public IEnumerable<Order> GetOrdersByHotelId(string hotelId)
