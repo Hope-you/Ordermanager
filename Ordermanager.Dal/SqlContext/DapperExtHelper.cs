@@ -16,7 +16,7 @@ namespace DbHelper
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        T Get(string id);
+        T GetFromDapper(string id);
 
         /// <summary>
         /// 获取当前实体的所有值
@@ -95,7 +95,7 @@ namespace DbHelper
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public T Get(string id)
+        public T GetFromDapper(string id)
         {
             return DbContext.DbConnection.Get<T>(id);
         }
@@ -109,7 +109,6 @@ namespace DbHelper
         {
             return DbContext.DbConnection.GetAll<T>();
         }
-
 
         /// <summary>
         /// 插入一个实体，

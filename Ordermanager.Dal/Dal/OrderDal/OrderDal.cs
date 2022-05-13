@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using DbHelper;
+using Ordermanager.Dal.Dal.BaseDal;
 using Ordermanager.Dal.RedisContext;
 using Ordermanager.Model;
 
@@ -9,7 +10,7 @@ namespace Ordermanager.Dal.OrderDal
 {
 
 
-    public interface IOrderDal : IDal<Order>
+    public interface IOrderDal : IBaseOverAllDal<Order>
     {
         /// <summary>
         /// 根据酒店的id获取所有订单
@@ -18,20 +19,19 @@ namespace Ordermanager.Dal.OrderDal
         /// <returns></returns>
         IEnumerable<Order> GetOrdersByHotelId(string hotelId);
     }
-    public class OrderDal : BaseDal<Order>, IOrderDal
+    public class OrderDal : BaseOverAllDal<Order>, IOrderDal
     {
-        private readonly IDapperExtHelper<Order> _dapperExtHelper;
-        private readonly IRedisHelper<Order> _redisHelper;
+        private readonly IBaseOverAllDal<Order> _baseOverAllDal;
 
-        public OrderDal(IDapperExtHelper<Order> dapperExtHelper,IRedisHelper<Order> redisHelper) : base(dapperExtHelper, redisHelper)
+        public OrderDal(IBaseOverAllDal<Order> baseOverAllDal) : base(baseOverAllDal)
         {
-            _dapperExtHelper = dapperExtHelper;
-            _redisHelper = redisHelper;
+            _baseOverAllDal = baseOverAllDal;
         }
 
         public IEnumerable<Order> GetOrdersByHotelId(string hotelId)
         {
-            return _dapperExtHelper.Query<Order>("SELECT * FROM Orders where _Hotel=@hotelId", new {hotelId});
+            return _baseOverAllDal.Query<Order>("SELECT * FROM Orders where _Hotel=@hotelId", new { hotelId });
         }
+
     }
 }

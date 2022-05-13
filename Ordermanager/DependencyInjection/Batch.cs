@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Ordermanager.Bll;
 using Ordermanager.Dal;
+using Ordermanager.Dal.Dal.BaseDal;
 using Ordermanager.Dal.Dal.CommodityDal;
 using Ordermanager.Dal.HotelDal;
 using Ordermanager.Dal.OrderDal;
@@ -24,6 +25,7 @@ namespace Ordermanager.Api.DependencyInjection
             services.AddScoped<OrderBll>();
             services.AddScoped<ICommodityDal, CommodityDal>();
             services.AddScoped<CommodityBll>();
+            services.AddScoped(typeof(IBaseOverAllDal<>), typeof(BaseOverAllDal<>));
         }
 
     }

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using DbHelper;
 using Newtonsoft.Json;
+using Ordermanager.Dal.Dal.BaseDal;
 using Ordermanager.Dal.RedisContext;
 using Ordermanager.Model;
 
 namespace Ordermanager.Dal.HotelDal
 {
-    public interface IHotelDal : IDal<Hotel>
+    public interface IHotelDal : IBaseOverAllDal<Hotel>
     {
         /// <summary>
         /// 根据Hotel的_User来查询所属的User
@@ -19,15 +20,13 @@ namespace Ordermanager.Dal.HotelDal
 
     }
 
-    public class HotelDall : BaseDal<Hotel>, IHotelDal
+    public class HotelDall : BaseOverAllDal<Hotel>, IHotelDal
     {
-        private readonly IDapperExtHelper<Hotel> _dapperExtHelper;
-        private readonly IRedisHelper<Hotel> _redisHelper;
+        private readonly IBaseOverAllDal<Hotel> _baseOverAllDal;
 
-        public HotelDall(IDapperExtHelper<Hotel> dapperExtHelper, IRedisHelper<Hotel> redisHelper) : base(dapperExtHelper, redisHelper)
+        public HotelDall(IBaseOverAllDal<Hotel> baseOverAllDal) : base(baseOverAllDal)
         {
-            _dapperExtHelper = dapperExtHelper;
-            _redisHelper = redisHelper;
+            _baseOverAllDal = baseOverAllDal;
         }
 
         /// <summary>
@@ -37,24 +36,11 @@ namespace Ordermanager.Dal.HotelDal
         /// <returns></returns>
         public IEnumerable<Hotel> GetHotelByUser(string userId)
         {
-            //这个方法还需要继续封装
-            string a = _redisHelper.Get(userId);
-            if (string.IsNullOrEmpty(a))
-            {
-                //如果redis没有就在数据库里查
-                var temp = _dapperExtHelper.Query<Hotel>("select * from Hotel where _user=@userId", new {userId});
-                //查完写进去
-                _redisHelper.Set(userId, JsonConvert.SerializeObject(temp));
-                return temp;
-            }
-            else
-            {
-                //直接返回redis的数据
-                return  JsonConvert.DeserializeObject<IEnumerable<Hotel>>(a);
-            }
-            
-        }
 
+            string sql = "select * from Hotel where _user=@userId";
+            //优先从redis中获取
+            return _baseOverAllDal.GetObjListFromRedisFirst(sql, new {userId}, userId, true);
+        }
 
     }
 }

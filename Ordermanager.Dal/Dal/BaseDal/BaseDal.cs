@@ -4,56 +4,53 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper.Contrib.Extensions;
 using DbHelper;
+using Ordermanager.Dal.Dal.BaseDal;
 using Ordermanager.Dal.RedisContext;
 using Ordermanager.Model;
 
 namespace Ordermanager.Dal
 {
-    //public interface IBaseDal<T> : IDal<T> where T:BaseModel,new()
-    //{
+    public interface IBaseDal<T> : IDal<T> where T : BaseModel, new()
+    {
 
-    //}
+    }
     /// <summary>
     /// basedal是继承IDal的类，实现了最基本的几个方法crud，其他的实体直接继承BaseDal就可以了
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class BaseDal<T> : IDal<T> where T : BaseModel, new()
+    public class BaseDal<T> : IBaseDal<T> where T : BaseModel, new()
     {
-        public IDapperExtHelper<T> dapperExtHelper;
-        public IRedisHelper<T> redisHelper;
+        private readonly BaseOverAllDal<T> _baseOverAllDal;
 
-        public BaseDal(IDapperExtHelper<T> _dapperExtHelper,IRedisHelper<T> _redisHelper)
+        public BaseDal(BaseOverAllDal<T> baseOverAllDal)
         {
-            dapperExtHelper = _dapperExtHelper;
-            redisHelper = _redisHelper;
+            _baseOverAllDal = baseOverAllDal;
         }
         public long add(T t)
         {
-            return dapperExtHelper.Insert(t);
+            return _baseOverAllDal.Insert(t);
         }
 
         public bool delete(T t)
         {
-            return dapperExtHelper.Delete(t);
+            return _baseOverAllDal.Delete(t);
         }
 
         public bool update(T t)
         {
-            return dapperExtHelper.Update(t);
+            return _baseOverAllDal.Update(t);
         }
 
         public T @select(string id)
         {
-            
-            return dapperExtHelper.Get(id);
+
+            return _baseOverAllDal.GetFromDapper(id);
         }
 
         public IEnumerable<T> selectAll()
         {
-            return dapperExtHelper.GetAll();
+            return _baseOverAllDal.GetAll();
         }
-
-
 
         public async Task<long> addAsync(T t)
         {
