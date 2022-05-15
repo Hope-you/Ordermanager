@@ -42,5 +42,15 @@ namespace Ordermanager.Controllers
         {
             return _userBll.GetAll();
         }
+
+
+        [HttpPost]
+        public string Authenticated([FromBody] LoginRequestBody loginRequestBody)
+        {
+            string token;
+            if (_userBll.UserLogin(loginRequestBody, out token))
+                return token;
+            return null;
+        }
     }
 }

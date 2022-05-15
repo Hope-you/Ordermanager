@@ -95,8 +95,6 @@ namespace Ordermanager.Dal.Dal.BaseDal
         /// <returns></returns>
         IEnumerable<T> GetObjListFromRedisFirst(string sql, object obj, string key, bool setRedis = false);
 
-
-
     }
     /// <summary>
     /// 把redis和dapper整合在一块 以DapperExtHelper为基类进行扩展的

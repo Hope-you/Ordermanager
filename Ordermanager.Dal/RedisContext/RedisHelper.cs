@@ -25,13 +25,13 @@ namespace Ordermanager.Dal.RedisContext
         /// <returns></returns>
         bool SetByRedis(string key, string value);
 
-        
+
     }
 
     public class RedisHelper<T> : IRedisHelper<T>
     {
         private readonly IDatabase _redisDb;
-        
+
         public RedisHelper(IDatabase redisDb)
         {
             _redisDb = redisDb;
@@ -45,8 +45,6 @@ namespace Ordermanager.Dal.RedisContext
         {
             return _redisDb.StringSet(key, value);
         }
-
-
     }
 
 }

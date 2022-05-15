@@ -20,16 +20,22 @@ namespace Ordermanager.Bll
             _userDal = userDal;
         }
 
-        public Model.User GetUserByLogin(string userName, string userPwd)
+        public User GetUserByLogin(string userName, string userPwd)
         {
             var user = _userDal.GetUserByLogin(userName, userPwd);
             user.userLoginTime = DateTime.Now;
             return user;
         }
 
-        public IEnumerable<Model.User> GetAll()
+        public IEnumerable<User> GetAll()
         {
             return _userDal.selectAll();
         }
+
+        public bool UserLogin(LoginRequestBody loginRequestBody,out string token)
+        {
+            return _userDal.IsAuthenticated(loginRequestBody, out token);
+        }
+
     }
 }

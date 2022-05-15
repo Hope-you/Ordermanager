@@ -1,31 +1,18 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using DbHelper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Ordermanager.Api.DependencyInjection;
-using Ordermanager.Bll;
-using Ordermanager.Dal;
-using Ordermanager.Dal.Dal.CommodityDal;
-using Ordermanager.Dal.HotelDal;
-using Ordermanager.Dal.OrderDal;
 using Ordermanager.Dal.RedisContext;
 using Ordermanager.Model;
 using Ordermanager.Model.Redis;
-using Hotel = Ordermanager.Model.Hotel;
-using OrderBll = Ordermanager.Bll.OrderBll;
-using UserBll = Ordermanager.Bll.UserBll;
 
 namespace Ordermanager
 {
@@ -42,6 +29,7 @@ namespace Ordermanager
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.Configure<TokenManagement>(Configuration.GetSection("tokenConfig"));
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("V1", new OpenApiInfo
@@ -78,8 +66,6 @@ namespace Ordermanager
                         ClockSkew = TimeSpan.FromMinutes(1)
                     };
                 });
-
-
             //配置数据库连接字符串
             services.AddDbcontext(Configuration.GetConnectionString("Default"));
 
