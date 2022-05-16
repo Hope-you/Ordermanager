@@ -171,9 +171,9 @@ namespace DbHelper
                 if (DbContext.DbConnection.State != ConnectionState.Open) DbContext.DbConnection.Open();
                 using (transaction = DbContext.DbConnection.BeginTransaction())
                 {
-                    var obj = DbContext.DbConnection.QueryFirst<T>(sql, param, transaction, commandTimeout, commandType);
+                    var obj = DbContext.DbConnection.QueryFirstOrDefault<T>(sql, param, transaction, commandTimeout, commandType);
                     if (obj == null)
-                        throw new Exception("没有查询到数据");
+                        return default;
                     transaction.Commit();
                     DbContext.DbConnection.Close();
                     return obj;

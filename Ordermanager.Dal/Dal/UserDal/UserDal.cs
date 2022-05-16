@@ -70,7 +70,7 @@ namespace Ordermanager.Dal
             //在数据库中验证数据
             if (loginUser == null)
                 return false;
-            token = GeneratorToken(request.userName);
+            token = GeneratorToken(loginUser.id);
             return true;
         }
         /// <summary>

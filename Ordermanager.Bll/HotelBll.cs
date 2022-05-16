@@ -15,7 +15,6 @@ namespace Ordermanager.Bll
 
         public IEnumerable<Model.Hotel> GetHotelByUser(string userId)
         {
-            
             return _hotelDal.GetHotelByUser(userId);
         }
     }
