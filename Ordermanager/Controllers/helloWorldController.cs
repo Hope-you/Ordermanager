@@ -7,12 +7,16 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Ordermanager.Bll;
 using Ordermanager.Model;
+using Microsoft.AspNetCore.Authorization;
 
-namespace Ordermanager.Controllers
+namespace Ordermanager.Api.Controllers
 {
+
+
     [Route("api/[controller]")]
     [ApiController]
-    public class helloWorldController : ControllerBase
+    [Authorize]
+    public class helloWorldController : PackageControllerBase
     {
         private readonly ILogger _logger;
 
@@ -24,7 +28,7 @@ namespace Ordermanager.Controllers
         public string helloWorld()
         {
             _logger.Log(LogLevel.Debug, "helloWorld()", _logger);
-            return "Hello World!";
+            return _userId;
         }
 
 

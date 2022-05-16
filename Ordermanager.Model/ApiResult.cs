@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ordermanager.Model
 {
-    public class ApiResult<T>
+    public class ApiResult
     {
         /// <summary>
         /// 请求状态码
@@ -14,7 +14,10 @@ namespace Ordermanager.Model
         /// <summary>
         /// 是否是成功的
         /// </summary>
-        public bool Success { get; set; }
+        public bool Success
+        {
+            get { return this.StatusCode == 200; }
+        }
 
         /// <summary>
         /// 信息
@@ -24,7 +27,7 @@ namespace Ordermanager.Model
         /// <summary>
         /// 数据实体
         /// </summary>
-        public T Data { get; set; }
+        public object Data { get; set; }
 
     }
 }

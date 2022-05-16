@@ -9,11 +9,13 @@ using Microsoft.AspNetCore.Authorization;
 using Ordermanager.Bll;
 using Ordermanager.Dal;
 using Ordermanager.Model;
+using Ordermanager.Api.Controllers;
 
 namespace Ordermanager.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ResultFilter]
     public class LoginController : ControllerBase
     {
         private readonly Bll.UserBll _userBll;
