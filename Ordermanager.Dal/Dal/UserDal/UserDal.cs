@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -25,9 +26,16 @@ namespace Ordermanager.Dal
     public interface IUserDal : IBaseOverAllDal<User>
     {
         public User GetUserByLogin(string userName, string userPwd);
-        IEnumerable<User> selectAll();
+        IEnumerable<User> SelectAll();
 
         public bool IsAuthenticated(LoginRequestBody request, out string token);
+
+        /// <summary>
+        /// 注册用户
+        /// </summary>
+        /// <param name="regUser"></param>
+        /// <returns></returns>
+        public bool RegUser(User regUser);
 
     }
 
@@ -51,10 +59,25 @@ namespace Ordermanager.Dal
             return _baseOverAllDal.QueryFirst<User>(sql, new { userName, userPwd });
         }
 
-        public IEnumerable<User> selectAll()
+        public IEnumerable<User> SelectAll()
         {
             return _baseOverAllDal.GetAll();
         }
+
+
+        public bool RegUser(User regUser)
+        {
+            //注册之前需要查询当前是否存在这个用户
+            string sql = "SELECT id from User WHERE userName=@userName and userPwd=@userPwd";
+            if (_baseOverAllDal.IsExist(sql, new { regUser.userName, regUser.userPwd })) return false;
+            //并没有返回影响的行数，没有参考价值
+            _baseOverAllDal.Insert(regUser);
+            if (_baseOverAllDal.IsExist(sql, new { regUser.userName, regUser.userPwd })) return true;
+            return false;
+
+        }
+
+
 
         /// <summary>
         /// 判断并生成token
@@ -73,6 +96,8 @@ namespace Ordermanager.Dal
             token = GeneratorToken(loginUser.id);
             return true;
         }
+
+
         /// <summary>
         /// 生成token的具体方法
         /// </summary>

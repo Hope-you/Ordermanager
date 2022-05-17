@@ -14,10 +14,7 @@ namespace Ordermanager.Model
         /// <summary>
         /// 是否是成功的
         /// </summary>
-        public bool Success
-        {
-            get { return this.StatusCode == 200; }
-        }
+        public bool Success { get; set; }
 
         /// <summary>
         /// 信息

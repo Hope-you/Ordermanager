@@ -8,11 +8,10 @@ using Microsoft.Extensions.Logging;
 using Ordermanager.Bll;
 using Ordermanager.Model;
 using Microsoft.AspNetCore.Authorization;
+using Ordermanager.Api.Controllers.BaseController;
 
 namespace Ordermanager.Api.Controllers
 {
-
-
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]

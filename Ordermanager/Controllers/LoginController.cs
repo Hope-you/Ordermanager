@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Ordermanager.Bll;
 using Ordermanager.Dal;
 using Ordermanager.Model;
-using Ordermanager.Api.Controllers;
+using Ordermanager.Dal.Filter;
 
 namespace Ordermanager.Controllers
 {

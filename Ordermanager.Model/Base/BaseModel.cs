@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper.Contrib.Extensions;
 
 namespace Ordermanager.Model
 {
@@ -10,6 +11,8 @@ namespace Ordermanager.Model
         /// <summary>
         /// 主键id
         /// </summary>
+
+        [ExplicitKey]
         public string id { get; set; }
     }
 }

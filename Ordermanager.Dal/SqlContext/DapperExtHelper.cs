@@ -86,6 +86,14 @@ namespace DbHelper
         public int Execute(string sql, object param = null, IDbTransaction transaction = null,
             int? commandTimeout = null, CommandType? commandType = null);
 
+        /// <summary>
+        /// 查询当前记录是否存在 true存在   false不存在
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public bool IsExist(string sql, object param = null);
+
     }
 
     public class DapperExtHelper<T> : IDapperExtHelper<T> where T : BaseModel, new()
@@ -219,5 +227,15 @@ namespace DbHelper
             return DbContext.DbConnection.Execute(sql, param, transaction, commandTimeout, commandType);
         }
 
+        /// <summary>
+        /// 执行sql 返回是否查到了行
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public bool IsExist(string sql, object param = null)
+        {
+            return DbContext.DbConnection.Query(sql, param).Any();
+        }
     }
 }

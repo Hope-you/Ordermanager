@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using DbHelper;
 using Ordermanager.Dal;
 using Ordermanager.Model;
@@ -28,7 +31,7 @@ namespace Ordermanager.Bll
 
         public IEnumerable<User> GetAll()
         {
-            return _userDal.selectAll();
+            return _userDal.SelectAll();
         }
 
         public bool UserLogin(LoginRequestBody loginRequestBody, out string token)
@@ -36,5 +39,18 @@ namespace Ordermanager.Bll
             return _userDal.IsAuthenticated(loginRequestBody, out token);
         }
 
+        public bool RegUser(LoginRequestBody loginRequestBody)
+        {
+            var regUser = new User
+            {
+                id = Guid.NewGuid().ToString("N"),
+                IsDelete = true,
+                userPwd = string.Join("", MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(loginRequestBody.userName))
+                    .Select(o => o.ToString("X"))),
+                userRegTime = DateTime.Now,
+                userName = loginRequestBody.userName
+            };
+            return _userDal.RegUser(regUser);
+        }
     }
 }

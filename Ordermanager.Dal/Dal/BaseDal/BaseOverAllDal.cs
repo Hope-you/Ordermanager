@@ -94,7 +94,6 @@ namespace Ordermanager.Dal.Dal.BaseDal
         /// <param name="setRedis">如果redis没有数据是否缓存到redis中</param>
         /// <returns></returns>
         IEnumerable<T> GetObjListFromRedisFirst(string sql, object obj, string key, bool setRedis = false);
-
     }
     /// <summary>
     /// 把redis和dapper整合在一块 以DapperExtHelper为基类进行扩展的
@@ -254,8 +253,8 @@ namespace Ordermanager.Dal.Dal.BaseDal
         public IEnumerable<T> GetObjListFromRedisFirst(string sql, object obj, string key, bool setRedis = false)
         {
             var redisList = GetObjListFromRedis(key);
-            
-            if (redisList != null && redisList.Any()) 
+
+            if (redisList != null && redisList.Any())
                 return redisList;
             return GetObjListFromDapper(sql, obj, key, setRedis);
 
