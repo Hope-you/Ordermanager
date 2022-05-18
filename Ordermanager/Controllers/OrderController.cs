@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ordermanager.Bll;
+using Ordermanager.Model;
 
 namespace Ordermanager.Api.Controllers
 {
@@ -20,8 +21,9 @@ namespace Ordermanager.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Model.Order> getOrders(string hotelId)
+        public IEnumerable<Order> getOrders(string hotelId)
         {
+
             return _order.GetOrdersByHotelId(hotelId);
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -22,9 +23,14 @@ namespace Ordermanager.Dal.Filter
             {
                 Data = context.Result,
                 StatusCode = context.HttpContext.Response.StatusCode,
+                Success = context.HttpContext.Response.StatusCode == 200
             };
             if (context.Result.GetType() == typeof(ObjectResult))
-                apiResult.Data = (context.Result as ObjectResult).Value;
+            {
+                var objRes = (context.Result as ObjectResult);
+                apiResult.Data = objRes?.Value;
+                apiResult.Success = objRes?.Value == null;
+            }
 
 
             context.Result = new ContentResult

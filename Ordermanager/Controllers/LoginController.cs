@@ -40,9 +40,9 @@ namespace Ordermanager.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IEnumerable<Model.User> GetAll()
+        public ActionResult GetAll()
         {
-            return _userBll.GetAll();
+            return Ok(_userBll.GetAll());
         }
 
 
