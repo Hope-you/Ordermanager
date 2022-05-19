@@ -13,20 +13,23 @@ namespace Ordermanager.Bll
     public class UserBll
     {
         private IUserDal _userDal;
+        private readonly ActionSimpResult _actionSimpResult;
 
         /// <summary>
         /// 从容器里获取数据dal层
         /// </summary>
         /// <param name="userDal"></param>
-        public UserBll(IUserDal userDal)
+        public UserBll(IUserDal userDal, ActionSimpResult actionSimpResult)
         {
             _userDal = userDal;
+            _actionSimpResult = actionSimpResult;
         }
 
-        public User GetUserByLogin(string userName, string userPwd)
+        public ActionSimpResult GetUserByLogin(string userName, string userPwd)
         {
             var user = _userDal.GetUserByLogin(userName, userPwd);
-            return user;
+            var actionResult = new ActionSimpResult { Data = user };
+            return actionResult;
         }
 
         public IEnumerable<User> GetAll()
@@ -34,12 +37,17 @@ namespace Ordermanager.Bll
             return _userDal.SelectAll();
         }
 
-        public bool UserLogin(LoginRequestBody loginRequestBody, out string token)
+        public ActionSimpResult UserLogin(LoginRequestBody loginRequestBody)
         {
-            return _userDal.IsAuthenticated(loginRequestBody, out token);
+            string token;
+            var isAuth = _userDal.IsAuthenticated(loginRequestBody, out token);
+            //如果对Msg和Success设置值的话，需要先赋值data，不然会被刷新，详细信息看ActionSimpResult这个类
+            _actionSimpResult.Data = token;
+            _actionSimpResult.Success = isAuth;
+            return _actionSimpResult;
         }
 
-        public bool RegUser(LoginRequestBody loginRequestBody)
+        public ActionSimpResult RegUser(LoginRequestBody loginRequestBody)
         {
             var regUser = new User
             {
@@ -50,7 +58,9 @@ namespace Ordermanager.Bll
                 userRegTime = DateTime.Now,
                 userName = loginRequestBody.userName
             };
-            return _userDal.RegUser(regUser);
+            _actionSimpResult.Data = _userDal.RegUser(regUser);
+
+            return _actionSimpResult;
         }
     }
 }

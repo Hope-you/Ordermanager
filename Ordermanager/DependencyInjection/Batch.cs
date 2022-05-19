@@ -25,6 +25,7 @@ namespace Ordermanager.Api.DependencyInjection
             services.AddScoped<OrderBll>();
             services.AddScoped<ICommodityDal, CommodityDal>();
             services.AddScoped<CommodityBll>();
+            services.AddScoped<ActionSimpResult>();
             services.AddScoped(typeof(IBaseOverAllDal<>), typeof(BaseOverAllDal<>));
         }
 

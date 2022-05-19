@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Ordermanager.Model;
 
 namespace Ordermanager.Api.Controllers.BaseController
 {

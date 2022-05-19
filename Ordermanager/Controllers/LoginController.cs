@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DbHelper;
 using Microsoft.AspNetCore.Authorization;
+using Ordermanager.Api.Controllers.BaseController;
 using Ordermanager.Bll;
 using Ordermanager.Dal;
 using Ordermanager.Model;
@@ -16,21 +17,21 @@ namespace Ordermanager.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [ResultFilter]
-    public class LoginController : ControllerBase
+    public class LoginController : PackageControllerBase
     {
-        private readonly Bll.UserBll _userBll;
+        private readonly UserBll _userBll;
         //private readonly UserDal _users;
         //public LoginController(UserDal users)
         //{
         //    _users = users;
         //}
-        public LoginController(Bll.UserBll userBll)
+        public LoginController(UserBll userBll)
         {
             _userBll = userBll;
         }
 
         [HttpGet("{userName}/{userPwd}")]
-        public Model.User Get(string userName, string userPwd)
+        public ActionSimpResult Get(string userName, string userPwd)
         {
             return _userBll.GetUserByLogin(userName, userPwd);
         }
@@ -47,12 +48,10 @@ namespace Ordermanager.Controllers
 
 
         [HttpPost]
-        public string Authenticated([FromBody] LoginRequestBody loginRequestBody)
+        public ActionSimpResult Authenticated([FromBody] LoginRequestBody loginRequestBody)
         {
-            string token;
-            if (_userBll.UserLogin(loginRequestBody, out token))
-                return token;
-            return null;
+            var data = _userBll.UserLogin(loginRequestBody);
+            return data;
         }
     }
 }
