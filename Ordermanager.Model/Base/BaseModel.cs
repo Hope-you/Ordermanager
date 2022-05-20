@@ -9,9 +9,8 @@ namespace Ordermanager.Model
     public class BaseModel
     {
         /// <summary>
-        /// 主键id
+        /// 主键id,ExplicitKey为了可以insert
         /// </summary>
-
         [ExplicitKey]
         public string id { get; set; }
     }

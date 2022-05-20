@@ -16,7 +16,6 @@ namespace Ordermanager.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [ResultFilter]
     public class LoginController : PackageControllerBase
     {
         private readonly UserBll _userBll;
@@ -29,12 +28,7 @@ namespace Ordermanager.Controllers
         {
             _userBll = userBll;
         }
-
-        [HttpGet("{userName}/{userPwd}")]
-        public ActionSimpResult Get(string userName, string userPwd)
-        {
-            return _userBll.GetUserByLogin(userName, userPwd);
-        }
+        
 
         /// <summary>
         /// 获取所有的User数据
@@ -48,10 +42,9 @@ namespace Ordermanager.Controllers
 
 
         [HttpPost]
-        public ActionSimpResult Authenticated([FromBody] LoginRequestBody loginRequestBody)
+        public ApiResult Authenticated([FromBody] LoginRequestBody loginRequestBody)
         {
-            var data = _userBll.UserLogin(loginRequestBody);
-            return data;
+            return _userBll.UserLogin(loginRequestBody);
         }
     }
 }

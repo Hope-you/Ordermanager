@@ -9,38 +9,38 @@ using Ordermanager.Model;
 
 namespace Ordermanager.Dal.Filter
 {
-    public class ResultFilter : Attribute, IResultFilter
-    {
-        public void OnResultExecuted(ResultExecutedContext context)
-        {
+    //public class ResultFilter : Attribute, IResultFilter
+    //{
+    //    public void OnResultExecuted(ResultExecutedContext context)
+    //    {
 
-            //结果执行之后
-        }
+    //        //结果执行之后
+    //    }
 
-        public void OnResultExecuting(ResultExecutingContext context)
-        {
-            var apiResult = new ApiResult()
-            {
-                Data = context.Result,
-                StatusCode = context.HttpContext.Response.StatusCode,
-                Success = context.HttpContext.Response.StatusCode == 200
-            };
-            if (context.Result.GetType() == typeof(ObjectResult))
-            {
-                var objRes = (context.Result as ObjectResult);
-                apiResult.Data = objRes?.Value;
-                apiResult.Success = objRes?.Value == null;
-            }
+    //    public void OnResultExecuting(ResultExecutingContext context)
+    //    {
+    //        var apiResult = new ApiResult()
+    //        {
+    //            Data = context.Result,
+    //            StatusCode = context.HttpContext.Response.StatusCode,
+    //            Success = context.HttpContext.Response.StatusCode == 200
+    //        };
+    //        if (context.Result.GetType() == typeof(ObjectResult))
+    //        {
+    //            var objRes = (context.Result as ObjectResult);
+    //            apiResult.Data = objRes?.Value;
+    //            apiResult.Success = objRes?.Value == null;
+    //        }
 
 
-            context.Result = new ContentResult
-            {
-                Content = JsonConvert.SerializeObject(apiResult),
-                StatusCode = context.HttpContext.Response.StatusCode,
-                ContentType = "application/json"
-            };
-        }
-    }
+    //        context.Result = new ContentResult
+    //        {
+    //            Content = JsonConvert.SerializeObject(apiResult),
+    //            StatusCode = context.HttpContext.Response.StatusCode,
+    //            ContentType = "application/json"
+    //        };
+    //    }
+    //}
 
     public class ActionFilter : Attribute, IActionFilter
     {

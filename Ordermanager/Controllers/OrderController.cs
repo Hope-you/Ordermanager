@@ -21,7 +21,7 @@ namespace Ordermanager.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Order> getOrders(string hotelId)
+        public IEnumerable<Order> GetOrders(string hotelId)
         {
 
             return _order.GetOrdersByHotelId(hotelId);

@@ -13,54 +13,70 @@ namespace Ordermanager.Bll
     public class UserBll
     {
         private IUserDal _userDal;
-        private readonly ActionSimpResult _actionSimpResult;
+        private ApiResult _apiResult;
 
         /// <summary>
         /// 从容器里获取数据dal层
         /// </summary>
         /// <param name="userDal"></param>
-        public UserBll(IUserDal userDal, ActionSimpResult actionSimpResult)
+        /// <param name="apiResult">规范返回结果</param>
+        public UserBll(IUserDal userDal, ApiResult apiResult)
         {
             _userDal = userDal;
-            _actionSimpResult = actionSimpResult;
+            _apiResult = apiResult;
         }
 
-        public ActionSimpResult GetUserByLogin(string userName, string userPwd)
+        public ApiResult GetAll()
         {
-            var user = _userDal.GetUserByLogin(userName, userPwd);
-            var actionResult = new ActionSimpResult { Data = user };
-            return actionResult;
+            var allUser = _userDal.SelectAll();
+            _apiResult.StatusCode = 200;
+            if (allUser != null && allUser.Any())
+            {
+                _apiResult.Data = allUser;
+                _apiResult.Msg = "请求成功";
+                _apiResult.Success = true;
+            }
+            else
+            {
+                _apiResult.Data = new List<User>();
+                _apiResult.Msg = "请求失败";
+                _apiResult.Success = false;
+            }
+            return _apiResult;
         }
 
-        public IEnumerable<User> GetAll()
-        {
-            return _userDal.SelectAll();
-        }
-
-        public ActionSimpResult UserLogin(LoginRequestBody loginRequestBody)
+        public ApiResult UserLogin(LoginRequestBody loginRequestBody)
         {
             string token;
+            loginRequestBody.passWord = CreateMd5(loginRequestBody.passWord);
             var isAuth = _userDal.IsAuthenticated(loginRequestBody, out token);
-            //如果对Msg和Success设置值的话，需要先赋值data，不然会被刷新，详细信息看ActionSimpResult这个类
-            _actionSimpResult.Data = token;
-            _actionSimpResult.Success = isAuth;
-            return _actionSimpResult;
+            _apiResult.Data = token;
+            _apiResult.Msg = isAuth ? "登陆成功" : "登陆失败";
+            _apiResult.Success = isAuth;
+            return _apiResult;
         }
 
-        public ActionSimpResult RegUser(LoginRequestBody loginRequestBody)
+        public ApiResult RegUser(LoginRequestBody loginRequestBody)
         {
+            //需要注册的用户信息
             var regUser = new User
             {
                 id = Guid.NewGuid().ToString("N"),
                 IsDelete = true,
-                userPwd = string.Join("", MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(loginRequestBody.userName))
-                    .Select(o => o.ToString("X"))),
+                userPwd = CreateMd5(loginRequestBody.passWord),
                 userRegTime = DateTime.Now,
                 userName = loginRequestBody.userName
             };
-            _actionSimpResult.Data = _userDal.RegUser(regUser);
+            _apiResult.Success = _userDal.RegUser(regUser);
+            _apiResult.Msg = _apiResult.Success ? "注册成功" : "注册失败";
+            _apiResult.Data = _apiResult.Success;
+            _apiResult.StatusCode = 200;
+            return _apiResult;
+        }
 
-            return _actionSimpResult;
+        private string CreateMd5(string str)
+        {
+            return string.Join("", MD5.Create().ComputeHash(Encoding.UTF8.GetBytes(str)).Select(o => o.ToString("X")));
         }
     }
 }

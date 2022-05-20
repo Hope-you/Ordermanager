@@ -29,11 +29,17 @@ namespace Ordermanager.Api.Controllers
 
         [HttpGet]
         //[UserIdEqualToken]
-        public IEnumerable<Hotel> GetHotelByUser()
+        public ApiResult GetHotelByUser()
         {
             //_userId 是解析的Token中的id
             //所有基于PackageControllerBase的控制器都可以获取到_userId 前提是需要权限的方法或类
             return _hotelBll.GetHotelByUser(_userId);
+        }
+
+        [HttpPost]
+        public ApiResult InsertHotel(Hotel hotel)
+        {
+            return _hotelBll.InsertHotel(hotel);
         }
     }
 

@@ -22,10 +22,9 @@ namespace Ordermanager.Api.Controllers
             _userBll = userBll;
         }
         [HttpPost]
-        public ActionSimpResult UserReg(LoginRequestBody loginRequestBody)
+        public ApiResult UserReg(LoginRequestBody loginRequestBody)
         {
             var data = _userBll.RegUser(loginRequestBody);
-            data.Msg = (bool)data.Data ? "注册成功" : "注册失败";
             return data;
         }
     }

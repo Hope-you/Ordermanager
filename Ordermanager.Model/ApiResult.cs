@@ -8,9 +8,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Ordermanager.Model
 {
-
-    public class ActionSimpResult
+    public class ApiResult
     {
+
+        /// <summary>
+        /// 请求状态码
+        /// </summary>
+        public int StatusCode { get; set; }
+
+
         /// <summary>
         /// 是否是成功的,状态码是200也可能是失败的，这里指的是业务上的
         /// </summary>
@@ -32,34 +38,29 @@ namespace Ordermanager.Model
             get => data;
             set
             {
-
-                var type = value.GetType();
-                if (type == typeof(string))
+                if (value != null)
                 {
-                    Success = string.IsNullOrEmpty((string)value);
-                }
+                    var type = value.GetType();
+                    if (type == typeof(string))
+                    {
+                        Success = string.IsNullOrEmpty((string)value);
+                    }
 
-                if (type == typeof(bool))
-                {
-                    Success = (bool)value;
+                    if (type == typeof(bool))
+                    {
+                        Success = (bool)value;
+                    }
+                    //默认msg的内容是是否请求成功，判断标准就是Success是否成功
+                    Msg = Success ? "请求成功" : "请求失败";
+                    data = value;
                 }
-                //默认msg的内容是是否请求成功，判断标准就是Success是否成功
-                Msg = Success ? "请求成功" : "请求失败";
-                data = value;
+                else
+                {
+                    Success = false;
+                    Msg = "请求失败";
+                    data = null;
+                }
             }
         }
-
-    }
-
-
-    public class ApiResult : ActionSimpResult
-    {
-
-        /// <summary>
-        /// 请求状态码
-        /// </summary>
-        public int StatusCode { get; set; }
-
-
     }
 }

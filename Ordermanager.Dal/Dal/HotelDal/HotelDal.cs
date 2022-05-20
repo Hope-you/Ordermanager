@@ -18,6 +18,8 @@ namespace Ordermanager.Dal.HotelDal
         /// <returns></returns>
         public IEnumerable<Hotel> GetHotelByUser(string userId);
 
+        public bool insertHotel(Hotel hotel);
+
     }
 
     public class HotelDall : BaseOverAllDal<Hotel>, IHotelDal
@@ -36,10 +38,15 @@ namespace Ordermanager.Dal.HotelDal
         /// <returns></returns>
         public IEnumerable<Hotel> GetHotelByUser(string userId)
         {
-
             string sql = "select * from Hotel where _user=@userId";
-            //优先从redis中获取
-            return _baseOverAllDal.GetObjListFromRedisFirst(sql, new {userId}, userId, true);
+            //优先从redis中获取  redis的key设置成id+业务名字  没有别的好想法
+            return _baseOverAllDal.GetObjListFromRedisFirst(sql, new { userId }, userId + "HotelList", true);
+        }
+
+        public bool insertHotel(Hotel hotel)
+        {
+            if (_baseOverAllDal.Insert(hotel) <= 0) return false;
+            return true;
         }
 
     }
